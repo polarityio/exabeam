@@ -1,9 +1,5 @@
 # Polarity Exabeam Integration
 
-| ![overlay window](assets/overlay.png) | ![risk history](assets/cve.png) |
-| ------------------------------------- | ------------------------------- |
-| _Exabeam Indicator results_           | _Exabeam CVE results_           |
-
 ## Exabeam Integration Options
 
 ### Exabeam API URL
