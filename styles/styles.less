@@ -1,0 +1,85 @@
+.log-row {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.log-container {
+  background-color: #ccc;
+  display: inline-block;
+  border: 1px solid #ccc;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+.type-tag {
+  background-color: #000;
+  display: inline-block;
+  border: 1px solid #000;
+  color: #fff;
+  padding: 2px;
+}
+
+.type-value {
+  background-color: #ccc;
+  display: inline-block;
+  border: 1px solid #ccc;
+  color: #fff;
+}
+
+.copy-btn-container {
+  flex: 1 1 auto;
+  right: 10px;
+  top: 7px;
+}
+
+.copy-btn {
+  font-size: 12px;
+  padding: 0px;
+  height: 20px;
+  align-self: flex-start;
+
+  :active {
+    color: darken(#388e3c, 5%);
+  }
+}
+
+.copy-success-message {
+  position: absolute;
+  top: 20px;
+  right: 0px;
+  background-color: rgb(222, 226, 230);
+  min-width: max-content;
+  padding: 5px;
+  border-radius: 3px;
+
+  .copy-success-icon {
+    color: #aaa;
+  }
+
+  &.visible {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.25s linear;
+  }
+
+  &.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      visibility 0s 0.25s,
+      opacity 0.25s linear;
+  }
+}
+
+.raw-log-title {
+  margin-bottom: 0px;
+}
+
+.attributes-title {
+  margin-bottom: 15px;
+}
