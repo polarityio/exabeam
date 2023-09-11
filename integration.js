@@ -20,7 +20,6 @@ function startup(logger) {
 // fix startTime and endTime
 // Summary tags
 // confirm filnames and hostnames are searchable
-// VALIDATE OPTIONS
 
 async function doLookup(entities, options, cb) {
   const Logger = getLogger();
@@ -36,15 +35,6 @@ async function doLookup(entities, options, cb) {
 
     const searchFields = polarityRequest.options.searchFields.map((field) => field.value);
 
-    function searchQuery(list) {
-      if (!Array.isArray(list)) {
-        return '';
-      }
-      const formattedList = list.map((value) => `"${value}"`).join(', ');
-
-      return `(${formattedList})`;
-    }
-
     const lookupResults = await Promise.all(
       map(async (entity) => {
         const response = await polarityRequest.send({
@@ -53,9 +43,9 @@ async function doLookup(entities, options, cb) {
           body: {
             limit: 10,
             distinct: false,
-            startTime: '2023-03-18T20:10:10Z',
+            startTime: '2023-03-18T20:10:10Z', // Ask about this in review.
             endTime: '2023-04-18T21:23:59Z',
-            filter: searchQuery(searchFields),
+            filter: `"${entity.value}"`,
             fields: ['rawLogs', ...searchFields]
           }
         });
@@ -84,9 +74,11 @@ async function doLookup(entities, options, cb) {
 async function getToken() {
   const Logger = getLogger();
 
-  if (tokenCache.has(polarityRequest.options.clienId)) {
-    Logger.debug('Using cached token');
-    return tokenCache.get(polarityRequest.options.clienId);
+  if (tokenCache.has(polarityRequest.options.clientId)) {
+    Logger.trace('Using cached token');
+    const token = tokenCache.get(polarityRequest.options.clientId);
+    Logger.trace({ token }, 'Token from cache');
+    return token.access_token;
   }
 
   const response = await polarityRequest.send({
@@ -94,7 +86,7 @@ async function getToken() {
     url: `${polarityRequest.options.url}/auth/v1/token`,
     body: {
       grant_type: 'client_credentials',
-      client_id: `${polarityRequest.options.clienId}`,
+      client_id: `${polarityRequest.options.clientId}`,
       client_secret: `${polarityRequest.options.clientSecret}`
     }
   });
@@ -102,7 +94,7 @@ async function getToken() {
   const data = response[0];
 
   tokenCache.set(
-    polarityRequest.options.clienId,
+    polarityRequest.options.clientId,
     data.result.body,
     data.result.body.expires_in - EXPIRE_THRESHOLD
   );
@@ -111,7 +103,28 @@ async function getToken() {
   return token;
 }
 
+function validateOptions(userOptions, cb) {
+  const requiredFields = [
+    { key: 'url', message: 'You must provide a valid URL' },
+    { key: 'clientId', message: 'You must provide a valid ScoutPrime API Key' },
+    { key: 'clientSecret', message: 'You must provide a valid ScoutPrime API Key' }
+  ];
+
+  const errors = requiredFields.reduce((acc, { key, message }) => {
+    if (
+      typeof userOptions[key].value !== 'string' ||
+      userOptions[key].value.length === 0
+    ) {
+      acc.push({ key, message });
+    }
+    return acc;
+  }, []);
+
+  return cb(null, errors);
+}
+
 module.exports = {
   doLookup,
+  validateOptions,
   startup
 };
