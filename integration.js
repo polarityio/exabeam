@@ -20,6 +20,7 @@ function startup(logger) {
 // fix startTime and endTime
 // Summary tags
 // confirm filnames and hostnames are searchable
+// VALIDATE OPTIONS
 
 async function doLookup(entities, options, cb) {
   const Logger = getLogger();
