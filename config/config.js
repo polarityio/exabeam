@@ -16,6 +16,7 @@ module.exports = {
   },
   logging: { level: 'info' },
   entityTypes: ['*'],
+  onDemandOnly: true,
   customTypes: [
     {
       key: 'filename',
