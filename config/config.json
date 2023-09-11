@@ -22,13 +22,13 @@
       "regex": "^\\w{1,40}$"
     }
   ],
-  "styles": ["./styles/scprime.less"],
+  "styles": ["./styles/styles.less"],
   "block": {
     "component": {
-      "file": "./components/scprime.js"
+      "file": "./components/component.js"
     },
     "template": {
-      "file": "./templates/scprime.hbs"
+      "file": "./templates/template.hbs"
     }
   },
   "options": [
@@ -42,7 +42,7 @@
       "adminOnly": true
     },
     {
-      "key": "clienId",
+      "key": "clientId",
       "name": "Exabeam Client ID",
       "description": "Exabeam Client ID",
       "default": "",
