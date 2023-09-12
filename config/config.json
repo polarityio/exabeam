@@ -13,6 +13,7 @@
   },
   "onDemandOnly": true,
   "entityTypes": ["*"],
+  "defaultColor": "light-blue",
   "customTypes": [
     {
       "key": "filename",

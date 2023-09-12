@@ -17,6 +17,7 @@ module.exports = {
   logging: { level: 'info' },
   entityTypes: ['*'],
   onDemandOnly: true,
+  defaultColor: 'light-blue',
   customTypes: [
     {
       key: 'filename',
