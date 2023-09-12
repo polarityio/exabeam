@@ -11,6 +11,7 @@
   "logging": {
     "level": "info"
   },
+  "onDemandOnly": true,
   "entityTypes": ["*"],
   "customTypes": [
     {
