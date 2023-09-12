@@ -16,6 +16,7 @@ module.exports = {
   },
   logging: { level: 'info' },
   entityTypes: ['*'],
+  polarityIntegrationUuid: "b5af7dc0-5198-11ee-b0ae-23ec381207bd",
   onDemandOnly: true,
   defaultColor: 'light-blue',
   customTypes: [
