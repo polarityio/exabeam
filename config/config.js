@@ -16,7 +16,6 @@ module.exports = {
   },
   logging: { level: 'info' },
   entityTypes: ['*'],
-  polarityIntegrationUuid: "b5af7dc0-5198-11ee-b0ae-23ec381207bd",
   onDemandOnly: true,
   defaultColor: 'light-blue',
   customTypes: [
@@ -68,20 +67,21 @@ module.exports = {
       adminOnly: true
     },
     {
-      key: 'startTime',
-      name: 'Exabeam start time for log search.',
-      description: 'Timestamp to start the search',
-      default: '',
-      type: 'password',
+      key: 'lookBackDays',
+      name: 'Exabeam Look Back Days',
+      description: 'Search window in days.',
+      default: 1,
+      type: 'number',
       userCanEdit: false,
       adminOnly: true
     },
     {
-      key: 'endTime',
-      name: 'Exabeam end time for log search.',
-      description: 'Timestamp to end the search.',
-      default: '',
-      type: 'password',
+      key: 'getRawLogs',
+      name: 'Exabeam Raw Logs',
+      description:
+        'If selected, the response will contain the Raw logs returned from the Exabeam API.',
+      default: false,
+      type: 'boolean',
       userCanEdit: false,
       adminOnly: true
     },
@@ -114,16 +114,8 @@ module.exports = {
           display: 'App'
         },
         {
-          value: 'approxLogTime',
-          display: 'Approximate Log Time'
-        },
-        {
           value: 'builder_name',
           display: 'Builder Name'
-        },
-        {
-          value: 'collector_timestamp',
-          display: 'Collector Timestamp'
         },
         {
           value: 'dest_user',
@@ -132,10 +124,6 @@ module.exports = {
         {
           value: 'id',
           display: 'Id'
-        },
-        {
-          value: 'injest_time',
-          display: 'Injest Time'
         },
         {
           value: 'is_ioc',
@@ -190,10 +178,6 @@ module.exports = {
           display: 'Raw Log Size'
         },
         {
-          value: 'raw_log_time_format',
-          display: 'Raw Log Time Format'
-        },
-        {
           value: 'result',
           display: 'Result'
         },
@@ -204,10 +188,6 @@ module.exports = {
         {
           value: 'tier',
           display: 'Tier'
-        },
-        {
-          value: 'time',
-          display: 'Time'
         },
         {
           value: 'url',
