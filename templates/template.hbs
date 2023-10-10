@@ -1,55 +1,81 @@
 {{#if details}}
   <div class="container">
-    {{#each logs as |log|}}
-
+    {{#each logs as |log index|}}
       <div class="log-row">
-        <div class="d-flex align-items-center justify-content-end copy-btn-container">
-          <button
-            class="btn copy-btn p-action"
-            {{action "copyData"}}
-            title="Copy Information to Clipboard"
-          >
-            {{fa-icon icon="clipboard" fixedWidth=true}}
-          </button>
-          <div class="copy-success-message {{if showCopyMessage 'visible' 'hidden'}}">
-            {{fa-icon icon="check" fixedWidth=true class="copy-success-icon"}}
-            Copied Raw Log.
+
+        {{#if block.userOptions.getRawLogs}}
+          <div class="d-flex align-items-center justify-content-end copy-btn-container">
+            <button
+              class="btn copy-btn p-action"
+              {{action "copyData"}}
+              title="Copy Information to Clipboard"
+            >
+              {{fa-icon icon="clipboard" fixedWidth=true}}
+            </button>
+            <div class="copy-success-message {{if showCopyMessage 'visible' 'hidden'}}">
+              {{fa-icon icon="check" fixedWidth=true class="copy-success-icon"}}
+              Copied Raw Log.
+            </div>
           </div>
-        </div>
+        {{/if}}
 
         <h1 class="attributes-title p-title">
           {{fa-icon icon="info" fixedWidth=true}}
           Attributes
         </h1>
+
         {{#each-in log as |type value|}}
           {{#if (not (eq type "rawLogs"))}}
-            <div class="log-container">
-              <div class="log-tags">
-                <span class="type-tag">{{type}}:</span>
-                <span class="type-value">{{value}}</span>
-              </div>
+            <div>
+              <span class="p-key">{{capitalize type}}:</span>
+              <span class="p-value">{{value}}</span>
             </div>
           {{/if}}
         {{/each-in}}
 
-        <h1 class="raw-log-title p-title">
-          {{fa-icon icon="eye" fixedWidth=true}}
-          Raw Logs
-        </h1>
-        {{#each-in log as |key value|}}
-          {{#if (eq key "rawLogs")}}
-            {{#each value as |rawLog|}}
-              <div class="raw-log">
-                <div
-                  style="word-break: break-all; padding: 10px;"
-                  id={{concat "raw-log-content-" uniqueIdPrefix}}
-                >
-                  {{rawLog}}
-                </div>
-              </div>
-            {{/each}}
-          {{/if}}
-        {{/each-in}}
+        {{#if block.userOptions.getRawLogs}}
+          {{#each-in log as |key value|}}
+            {{#if (eq key "rawLogs")}}
+              {{#each value as |rawLog|}}
+
+                {{#if (get expandableTitleStates index)}}
+                  <a
+                    href="#"
+                    class="expandable-title"
+                    {{on "click" (action "toggleExpandableTitle" index)}}
+                  >
+                    View Raw Logs
+                    <span class="text">
+                      {{fa-icon "laptop" fixedWidth=true}}
+                      {{subsystem.displayName}}
+                    </span>
+                    {{fa-icon "angle-up"}}
+                  </a>
+                  <div class="raw-log">
+                    <div
+                      style="word-break: break-all; padding: 10px;"
+                      id={{concat "raw-log-content-" uniqueIdPrefix}}
+                    >
+                      {{rawLog}}
+                    </div>
+                  </div>
+                {{else}}
+                  <a
+                    href="#"
+                    class="expandable-title"
+                    {{on "click" (action "toggleExpandableTitle" index)}}
+                  >
+                    View Raw Logs
+                    <span class="text">
+                      {{fa-icon "laptop" fixedWidth=true}}
+                      {{subsystem.displayName}}
+                    </span>{{fa-icon "angle-down"}}
+                  </a>
+                {{/if}}
+              {{/each}}
+            {{/if}}
+          {{/each-in}}
+        {{/if}}
       </div>
     {{/each}}
   </div>

@@ -70,9 +70,7 @@
   &.hidden {
     visibility: hidden;
     opacity: 0;
-    transition:
-      visibility 0s 0.25s,
-      opacity 0.25s linear;
+    transition: visibility 0s 0.25s, opacity 0.25s linear;
   }
 }
 
@@ -82,4 +80,20 @@
 
 .attributes-title {
   margin-bottom: 15px;
+}
+
+.expandable-title {
+  display: block;
+  color: #5ccd18 !important;
+  font-weight: 600;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  .text {
+    color: #5ccd18 !important;
+    border-bottom: 1px solid #5ccd18;
+    .desc {
+      color: black !important;
+      font-weight: 400 !important;
+    }
+  }
 }

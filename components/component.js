@@ -1,6 +1,7 @@
 polarity.export = PolarityComponent.extend({
   details: Ember.computed.alias('block.data.details'),
   showCopyMessage: false,
+  expandableTitleStates: {},
   uniqueIdPrefix: '',
   logs: Ember.computed.alias('block.data.details.rows'),
   init() {
@@ -21,6 +22,15 @@ polarity.export = PolarityComponent.extend({
       );
 
       Ember.run.scheduleOnce('destroy', this, this.restoreCopyState);
+    },
+    toggleExpandableTitle: function (index) {
+      console.log('INDEX', index);
+      this.set(
+        `expandableTitleStates`,
+        Object.assign({}, this.get('expandableTitleStates'), {
+          [index]: !this.get(`expandableTitleStates`)[index]
+        })
+      );
     }
   },
   copyElementToClipboard(element) {
