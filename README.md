@@ -26,6 +26,10 @@ The end time that is used to query for the a range of logs.
 
 The data fields that are returned from the Exabeam search API.
 
+### Get Raw Logs
+
+If selected, the response will contain the Raw logs returned from the Exabeam API.
+
 ## Installation Instructions
 
 Installation instructions for integrations are provided on the [PolarityIO GitHub Page](https://polarityio.github.io/).

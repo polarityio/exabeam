@@ -13,12 +13,11 @@
   },
   "onDemandOnly": true,
   "entityTypes": ["*"],
-  "polarityIntegrationUuid": "b5af7dc0-5198-11ee-b0ae-23ec381207bd",
   "defaultColor": "light-blue",
   "customTypes": [
     {
       "key": "filename",
-      "regex": "^.{1,256}\\.(jpg|gif|doc|pdf|docx|db|dbsys|sys|exe|dll|file|virus|dontopen|zip|php|hta|bat|pem|txt|dat|msg|lnk|dotm|log|py|xls|ps1|vbe|VBE|css|CSS|site|store|world|email|group|tools|vip|services|rocks|download|online|network|vin|club|wiki|vbs|ini|top|gdn|bid|tech|html|cloud|win|energy|support|date|app|xyz|desi|software|kim)$"
+      "regex": "^.{1,256}\\.(jpg|gif|doc|pdf|docxw|db|dbsys|sys|exe|dll|file|virus|dontopen|zip|php|hta|bat|pem|txt|dat|msg|lnk|dotm|log|py|xls|ps1|vbe|VBE|css|CSS|site|store|world|email|group|tools|vip|services|rocks|download|online|network|vin|club|wiki|vbs|ini|top|gdn|bid|tech|html|cloud|win|energy|support|date|app|xyz|desi|software|kim)$"
     },
     {
       "key": "hostname",
@@ -63,20 +62,20 @@
       "adminOnly": true
     },
     {
-      "key": "startTime",
-      "name": "Exabeam start time for log search.",
-      "description": "Timestamp to start the search",
-      "default": "",
-      "type": "password",
+      "key": "lookBackDays",
+      "name": "Exabeam Look Back Days",
+      "description": "Search window in days.",
+      "default": 1,
+      "type": "number",
       "userCanEdit": false,
       "adminOnly": true
     },
     {
-      "key": "endTime",
-      "name": "Exabeam end time for log search.",
-      "description": "Timestamp to end the search.",
-      "default": "",
-      "type": "password",
+      "key": "getRawLogs",
+      "name": "Exabeam Raw Logs",
+      "description": "If selected, the response will contain the Raw logs returned from the Exabeam API.",
+      "default": false,
+      "type": "boolean",
       "userCanEdit": false,
       "adminOnly": true
     },
@@ -86,8 +85,8 @@
       "description": "Select which fields you would like return values for.",
       "default": [
         {
-          "value": "intel",
-          "display": "Threat Intel"
+          "value": "activity",
+          "display": "Activity"
         }
       ],
       "type": "select",
@@ -109,16 +108,8 @@
           "display": "App"
         },
         {
-          "value": "approxLogTime",
-          "display": "Approximate Log Time"
-        },
-        {
           "value": "builder_name",
           "display": "Builder Name"
-        },
-        {
-          "value": "collector_timestamp",
-          "display": "Collector Timestamp"
         },
         {
           "value": "dest_user",
@@ -127,10 +118,6 @@
         {
           "value": "id",
           "display": "Id"
-        },
-        {
-          "value": "injest_time",
-          "display": "Injest Time"
         },
         {
           "value": "is_ioc",
@@ -185,10 +172,6 @@
           "display": "Raw Log Size"
         },
         {
-          "value": "raw_log_time_format",
-          "display": "Raw Log Time Format"
-        },
-        {
           "value": "result",
           "display": "Result"
         },
@@ -199,10 +182,6 @@
         {
           "value": "tier",
           "display": "Tier"
-        },
-        {
-          "value": "time",
-          "display": "Time"
         },
         {
           "value": "url",
