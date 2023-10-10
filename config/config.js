@@ -1,5 +1,6 @@
 module.exports = {
   name: 'Exabeam',
+  polarityIntegrationUuid: 'ed5154f0-67a1-11ee-aaaf-fbe7fe538fd8',
   acronym: 'EXB',
   request: {
     // Provide the path to your certFile. Leave an empty string to ignore this option.
