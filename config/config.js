@@ -1,6 +1,7 @@
 module.exports = {
   name: 'Exabeam',
-  polarityIntegrationUuid: 'ed5154f0-67a1-11ee-aaaf-fbe7fe538fd8',
+  description:
+    'The Polarity Exabeam Integration can be used to detect and respond to security threats by analyzing user and entity behavior, collecting and correlating data from multiple sources.',
   acronym: 'EXB',
   request: {
     // Provide the path to your certFile. Leave an empty string to ignore this option.
@@ -70,8 +71,8 @@ module.exports = {
     {
       key: 'lookBackDays',
       name: 'Exabeam Look Back Days',
-      description: 'Search window in days.',
-      default: 1,
+      description: 'The number of days back for log search results in Exabeam.',
+      default: 30,
       type: 'number',
       userCanEdit: false,
       adminOnly: true

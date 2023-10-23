@@ -114,18 +114,7 @@ function validateOptions(userOptions, cb) {
     { key: 'clientSecret', message: 'You must provide a valid ScoutPrime API Key' }
   ];
 
-  const errors = requiredFields.reduce((acc, { key, message }) => {
-    if (userOptions.lookBackDays && userOptions.lookBackDays.value < 1) {
-      acc.push({ key: 'lookBackDays', message: 'value must be greater than 0' });
-    }
-
-    if (userOptions.searchFields && userOptions.searchFields.value.length < 1) {
-      acc.push({
-        key: 'searchFields',
-        message: 'You must select at least 1 field to search.'
-      });
-    }
-
+  let errors = requiredFields.reduce((acc, { key, message }) => {
     if (
       (!userOptions[key] !== 'lookBackDays' &&
         typeof userOptions[key].value !== 'string') ||
@@ -135,6 +124,17 @@ function validateOptions(userOptions, cb) {
     }
     return acc;
   }, []);
+
+  if (userOptions.lookBackDays && userOptions.lookBackDays.value < 1) {
+    errors.push({ key: 'lookBackDays', message: 'value must be greater than 0' });
+  }
+
+  if (userOptions.searchFields && userOptions.searchFields.value.length < 1) {
+    errors.push({
+      key: 'searchFields',
+      message: 'You must select at least 1 field to search.'
+    });
+  }
 
   return cb(null, errors);
 }

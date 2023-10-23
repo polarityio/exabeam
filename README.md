@@ -14,13 +14,9 @@ Exabeam client id that can be found under settings -> API keys in the Exabeam da
 
 Exabeam client secret that can be found under settings -> API keys in the Exabeam dashboard.
 
-### Start Time
+### Exabeam Look Back Days
 
-The start time that is used to query for the a range of logs.
-
-### End Time
-
-The end time that is used to query for the a range of logs.
+The number of days back for log search results in Exabeam.
 
 ### Search Fields
 

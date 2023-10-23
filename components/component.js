@@ -5,15 +5,12 @@ polarity.export = PolarityComponent.extend({
   uniqueIdPrefix: '',
   logs: Ember.computed.alias('block.data.details.rows'),
   init() {
-    console.log(this.get('logs'));
     let array = new Uint32Array(5);
     this.set('uniqueIdPrefix', window.crypto.getRandomValues(array).join(''));
     this._super(...arguments);
   },
   actions: {
     copyData: function () {
-      console.log('copyData');
-
       Ember.run.scheduleOnce(
         'afterRender',
         this,
@@ -24,7 +21,6 @@ polarity.export = PolarityComponent.extend({
       Ember.run.scheduleOnce('destroy', this, this.restoreCopyState);
     },
     toggleExpandableTitle: function (index) {
-      console.log('INDEX', index);
       this.set(
         `expandableTitleStates`,
         Object.assign({}, this.get('expandableTitleStates'), {
@@ -34,12 +30,18 @@ polarity.export = PolarityComponent.extend({
     }
   },
   copyElementToClipboard(element) {
+    console.log(element);
     window.getSelection().removeAllRanges();
     let range = document.createRange();
+    console.log(range);
+
+    const el = document.getElementById(element);
+    console.log(el);
 
     range.selectNode(
       typeof element === 'string' ? document.getElementById(element) : element
     );
+
     window.getSelection().addRange(range);
     document.execCommand('copy');
     window.getSelection().removeAllRanges();

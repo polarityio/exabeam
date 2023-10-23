@@ -2,7 +2,6 @@
   <div class="container">
     {{#each logs as |log index|}}
       <div class="log-row">
-
         {{#if block.userOptions.getRawLogs}}
           <div class="d-flex align-items-center justify-content-end copy-btn-container">
             <button
@@ -51,14 +50,14 @@
                     </span>
                     {{fa-icon "angle-up"}}
                   </a>
-                  <div class="raw-log">
-                    <div
-                      style="word-break: break-all; padding: 10px;"
-                      id={{concat "raw-log-content-" uniqueIdPrefix}}
-                    >
-                      {{rawLog}}
-                    </div>
+                  {{! <div class="raw-log"> }}
+                  <div
+                    style="word-break: break-all; padding: 10px;"
+                    id={{concat "raw-log-content-" uniqueIdPrefix}}
+                  >
+                    {{rawLog}}
                   </div>
+                  {{! </div> }}
                 {{else}}
                   <a
                     href="#"
@@ -78,5 +77,15 @@
         {{/if}}
       </div>
     {{/each}}
+
+    {{#if (eq logs.length 10)}}
+      <div class="mt-1">
+        <span class="p-footnote">There are more results than what is being displayed.
+          <a class="p-link" href="https://www.exabeam.com/">
+            Navigate to Exebeam
+          </a>
+        </span>
+      </div>
+    {{/if}}
   </div>
 {{/if}}

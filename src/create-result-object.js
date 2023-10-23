@@ -45,7 +45,11 @@ const createSummaryTags = (result) => {
 
   Logger.trace({ result }, 'result from createSummaryTags');
 
-  summaryTags.push(`Logs: ${size(result.rows)}`);
+  if (size(result.rows) === 10) {
+    summaryTags.push(`Logs: ${size(result.rows)}+`);
+  } else {
+    summaryTags.push(`Logs: ${size(result.rows)}`);
+  }
 
   return summaryTags;
 };
