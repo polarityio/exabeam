@@ -2,7 +2,7 @@
   <div class="container">
     {{#each logs as |log index|}}
       <div class="log-row">
-        {{#if block.userOptions.getRawLogs}}
+        {{#if (and block.userOptions.getRawLogs (get expandableTitleStates index))}}
           <div class="d-flex align-items-center justify-content-end copy-btn-container">
             <button
               class="btn copy-btn p-action"
