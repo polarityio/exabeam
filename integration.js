@@ -116,8 +116,7 @@ function validateOptions(userOptions, cb) {
 
   let errors = requiredFields.reduce((acc, { key, message }) => {
     if (
-      (!userOptions[key] !== 'lookBackDays' &&
-        typeof userOptions[key].value !== 'string') ||
+      typeof userOptions[key].value !== 'string' ||
       userOptions[key].value.length === 0
     ) {
       acc.push({ key, message });
