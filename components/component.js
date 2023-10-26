@@ -1,24 +1,40 @@
+const { log } = require('async');
+
 polarity.export = PolarityComponent.extend({
   details: Ember.computed.alias('block.data.details'),
   showCopyMessage: false,
   expandableTitleStates: {},
   uniqueIdPrefix: '',
-  logs: Ember.computed.alias('block.data.details.rows'),
+  logs: Ember.computed('block.data.details.rows', function () {
+    const logs = this.get('block.data.details.rows');
+
+    const displayFields = this.get('block.userOptions.displayFields').map(
+      (field) => field.value
+    );
+  }),
   init() {
-    let array = new Uint32Array(5);
-    this.set('uniqueIdPrefix', window.crypto.getRandomValues(array).join(''));
+    if (!this.get('block._state')) {
+      this.set('block._state', {});
+    }
     this._super(...arguments);
   },
   actions: {
-    copyData: function () {
-      Ember.run.scheduleOnce(
-        'afterRender',
-        this,
-        this.copyElementToClipboard,
-        `raw-log-content-${this.get('uniqueIdPrefix')}`
-      );
+    copyTextToClipboard: function (text, target) {
+      const json = text[0];
 
-      Ember.run.scheduleOnce('destroy', this, this.restoreCopyState);
+      navigator.clipboard
+        .writeText(json)
+        .then(() => {
+          this.set(`block._state.${target}`, true);
+        })
+        .catch((err) => {})
+        .finally(() => {
+          setTimeout(() => {
+            if (!this.isDestroyed) {
+              this.set(`block._state.${target}`, false);
+            }
+          }, 2000);
+        });
     },
     toggleExpandableTitle: function (index) {
       this.set(
@@ -28,31 +44,5 @@ polarity.export = PolarityComponent.extend({
         })
       );
     }
-  },
-  copyElementToClipboard(element) {
-    console.log(element);
-    window.getSelection().removeAllRanges();
-    let range = document.createRange();
-    console.log(range);
-
-    const el = document.getElementById(element);
-    console.log(el);
-
-    range.selectNode(
-      typeof element === 'string' ? document.getElementById(element) : element
-    );
-
-    window.getSelection().addRange(range);
-    document.execCommand('copy');
-    window.getSelection().removeAllRanges();
-  },
-  restoreCopyState() {
-    this.set('showCopyMessage', true);
-
-    setTimeout(() => {
-      if (!this.isDestroyed) {
-        this.set('showCopyMessage', false);
-      }
-    }, 2000);
   }
 });

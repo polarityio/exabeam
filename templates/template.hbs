@@ -2,18 +2,14 @@
   <div class="container">
     {{#each logs as |log index|}}
       <div class="log-row">
-        {{#if (and block.userOptions.getRawLogs (get expandableTitleStates index))}}
+        {{#if block.userOptions.getRawLogs}}
           <div class="d-flex align-items-center justify-content-end copy-btn-container">
-            <button
-              class="btn copy-btn p-action"
-              {{action "copyData"}}
-              title="Copy Information to Clipboard"
-            >
-              {{fa-icon icon="clipboard" fixedWidth=true}}
-            </button>
-            <div class="copy-success-message {{if showCopyMessage 'visible' 'hidden'}}">
-              {{fa-icon icon="check" fixedWidth=true class="copy-success-icon"}}
-              Copied Raw Log.
+            <div>
+              <a {{action "copyTextToClipboard" log.rawLogs "Copy Raw Log."}}>{{fa-icon
+                  icon="copy"
+                  fixedWidth=true
+                  class="icon"
+                }}</a>
             </div>
           </div>
         {{/if}}
@@ -50,14 +46,9 @@
                     </span>
                     {{fa-icon "angle-up"}}
                   </a>
-                  {{! <div class="raw-log"> }}
-                  <div
-                    style="word-break: break-all; padding: 10px;"
-                    id={{concat "raw-log-content-" uniqueIdPrefix}}
-                  >
+                  <div style="word-break: break-all; padding: 10px;">
                     {{rawLog}}
                   </div>
-                  {{! </div> }}
                 {{else}}
                   <a
                     href="#"
