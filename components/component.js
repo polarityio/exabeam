@@ -1,5 +1,3 @@
-const { log } = require('async');
-
 polarity.export = PolarityComponent.extend({
   details: Ember.computed.alias('block.data.details'),
   showCopyMessage: false,
