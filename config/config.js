@@ -1,5 +1,7 @@
 module.exports = {
   name: 'Exabeam',
+  description:
+    'The Polarity Exabeam Integration can be used to detect and respond to security threats by analyzing user and entity behavior, collecting and correlating data from multiple sources.',
   acronym: 'EXB',
   request: {
     // Provide the path to your certFile. Leave an empty string to ignore this option.
@@ -16,6 +18,8 @@ module.exports = {
   },
   logging: { level: 'info' },
   entityTypes: ['*'],
+  onDemandOnly: true,
+  defaultColor: 'light-blue',
   customTypes: [
     {
       key: 'filename',
@@ -65,31 +69,44 @@ module.exports = {
       adminOnly: true
     },
     {
-      key: 'startTime',
-      name: 'Exabeam start time for log search.',
-      description: 'Timestamp to start the search',
-      default: '',
-      type: 'password',
+      key: 'lookBackDays',
+      name: 'Exabeam Look Back Days',
+      description: 'The number of days back for log search results in Exabeam.',
+      default: 30,
+      type: 'number',
       userCanEdit: false,
       adminOnly: true
     },
     {
-      key: 'endTime',
-      name: 'Exabeam end time for log search.',
-      description: 'Timestamp to end the search.',
-      default: '',
-      type: 'password',
+      key: 'getRawLogs',
+      name: 'Exabeam Raw Logs',
+      description:
+        'If selected, the response will contain the Raw logs returned from the Exabeam API.',
+      default: false,
+      type: 'boolean',
       userCanEdit: false,
       adminOnly: true
     },
     {
-      key: 'searchFields',
-      name: 'Exabeam searchable fields.',
-      description: 'Select which fields you would like return values for.',
+      key: 'displayFields',
+      name: 'Exabeam Displayed Fields.',
+      description: 'Fields that a you like displayed in the UI.',
       default: [
         {
-          value: 'activity', //TODO: ask about this.
+          value: 'activity',
           display: 'Activity'
+        },
+        {
+          value: 'landscape',
+          display: 'Landscape'
+        },
+        {
+          value: 'alert_subject',
+          display: 'Alert Subject'
+        },
+        {
+          value: 'operation',
+          display: 'Operation'
         }
       ],
       type: 'select',
@@ -111,16 +128,8 @@ module.exports = {
           display: 'App'
         },
         {
-          value: 'approxLogTime',
-          display: 'Approximate Log Time'
-        },
-        {
           value: 'builder_name',
           display: 'Builder Name'
-        },
-        {
-          value: 'collector_timestamp',
-          display: 'Collector Timestamp'
         },
         {
           value: 'dest_user',
@@ -129,10 +138,6 @@ module.exports = {
         {
           value: 'id',
           display: 'Id'
-        },
-        {
-          value: 'injest_time',
-          display: 'Injest Time'
         },
         {
           value: 'is_ioc',
@@ -187,8 +192,114 @@ module.exports = {
           display: 'Raw Log Size'
         },
         {
-          value: 'raw_log_time_format',
-          display: 'Raw Log Time Format'
+          value: 'result',
+          display: 'Result'
+        },
+        {
+          value: 'subject',
+          display: 'Subject'
+        },
+        {
+          value: 'tier',
+          display: 'Tier'
+        },
+        {
+          value: 'url',
+          display: 'URL'
+        },
+        {
+          value: 'vendor',
+          display: 'Vendor'
+        }
+      ],
+      multiple: true,
+      userCanEdit: false,
+      adminOnly: false
+    },
+    {
+      key: 'searchFields',
+      name: 'Exabeam searchable fields.',
+      description: 'Select which fields you would like return values for.',
+      default: [
+        {
+          value: 'activity',
+          display: 'Activity'
+        },
+        {
+          value: 'activity_type',
+          display: 'Activity Type'
+        },
+        {
+          value: 'alert_subject',
+          display: 'Alert Subject'
+        },
+        {
+          value: 'app',
+          display: 'App'
+        },
+        {
+          value: 'builder_name',
+          display: 'Builder Name'
+        },
+        {
+          value: 'dest_user',
+          display: 'Dest User'
+        },
+        {
+          value: 'id',
+          display: 'Id'
+        },
+        {
+          value: 'is_ioc',
+          display: 'Is IOC'
+        },
+        {
+          value: 'landscape',
+          display: 'Landscape'
+        },
+        {
+          value: 'method',
+          display: 'Method'
+        },
+        {
+          value: 'msg_type',
+          display: 'Message Type'
+        },
+        {
+          value: 'operation',
+          display: 'Operation'
+        },
+        {
+          value: 'operation_type',
+          display: 'Opteration Type'
+        },
+        {
+          value: 'outcome',
+          display: 'Outcome'
+        },
+        {
+          value: 'parsed',
+          display: 'Parsed'
+        },
+        {
+          value: 'parser_version',
+          display: 'Parser Version'
+        },
+        {
+          value: 'platform',
+          display: 'Platform'
+        },
+        {
+          value: 'product',
+          display: 'Product'
+        },
+        {
+          value: 'rawLogIds',
+          display: 'Raw Log Ids'
+        },
+        {
+          value: 'raw_log_size',
+          display: 'Raw Log Size'
         },
         {
           value: 'result',
@@ -203,8 +314,107 @@ module.exports = {
           display: 'Tier'
         },
         {
-          value: 'time',
-          display: 'Time'
+          value: 'url',
+          display: 'URL'
+        },
+        {
+          value: 'vendor',
+          display: 'Vendor'
+        }
+      ],
+      type: 'select',
+      options: [
+        {
+          value: 'activity',
+          display: 'Activity'
+        },
+        {
+          value: 'activity_type',
+          display: 'Activity Type'
+        },
+        {
+          value: 'alert_subject',
+          display: 'Alert Subject'
+        },
+        {
+          value: 'app',
+          display: 'App'
+        },
+        {
+          value: 'builder_name',
+          display: 'Builder Name'
+        },
+        {
+          value: 'dest_user',
+          display: 'Dest User'
+        },
+        {
+          value: 'id',
+          display: 'Id'
+        },
+        {
+          value: 'is_ioc',
+          display: 'Is IOC'
+        },
+        {
+          value: 'landscape',
+          display: 'Landscape'
+        },
+        {
+          value: 'method',
+          display: 'Method'
+        },
+        {
+          value: 'msg_type',
+          display: 'Message Type'
+        },
+        {
+          value: 'operation',
+          display: 'Operation'
+        },
+        {
+          value: 'operation_type',
+          display: 'Opteration Type'
+        },
+        {
+          value: 'outcome',
+          display: 'Outcome'
+        },
+        {
+          value: 'parsed',
+          display: 'Parsed'
+        },
+        {
+          value: 'parser_version',
+          display: 'Parser Version'
+        },
+        {
+          value: 'platform',
+          display: 'Platform'
+        },
+        {
+          value: 'product',
+          display: 'Product'
+        },
+        {
+          value: 'rawLogIds',
+          display: 'Raw Log Ids'
+        },
+        {
+          value: 'raw_log_size',
+          display: 'Raw Log Size'
+        },
+        {
+          value: 'result',
+          display: 'Result'
+        },
+        {
+          value: 'subject',
+          display: 'Subject'
+        },
+        {
+          value: 'tier',
+          display: 'Tier'
         },
         {
           value: 'url',

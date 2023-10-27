@@ -3,27 +3,22 @@
 const { polarityRequest } = require('./src/polarity-request');
 const { setLogger, getLogger } = require('./src/logger');
 const { PolarityResult } = require('./src/create-result-object');
-const { map, get, size } = require('lodash/fp');
+const { map, get, size, uniq } = require('lodash/fp');
 const { parseErrorToReadableJSON } = require('./src/errors');
+const { DateTime } = require('luxon');
 const NodeCache = require('node-cache');
 
 const tokenCache = new NodeCache();
 
-// Number of seconds before the API Key should expire to expire it
 const EXPIRE_THRESHOLD = 120;
 
 function startup(logger) {
   setLogger(logger);
 }
 
-// Questions for PR:
-// fix startTime and endTime
-// Summary tags
-// confirm filnames and hostnames are searchable
-
 async function doLookup(entities, options, cb) {
   const Logger = getLogger();
-
+  Logger.trace({ options }, 'options from Exabeam');
   try {
     polarityRequest.setOptions(options);
 
@@ -33,7 +28,15 @@ async function doLookup(entities, options, cb) {
     polarityRequest.setHeaders('Accept', 'application/json');
     polarityRequest.setHeaders('Authorization', `Bearer ${token}`);
 
-    const searchFields = polarityRequest.options.searchFields.map((field) => field.value);
+    const searchFields = uniq(
+      polarityRequest.options.searchFields
+        .concat(polarityRequest.options.displayFields)
+        .map((field) => field.value)
+    );
+
+    const selectedFields = options.getRawLogs
+      ? ['rawLogs', ...searchFields]
+      : [...searchFields];
 
     const lookupResults = await Promise.all(
       map(async (entity) => {
@@ -43,10 +46,10 @@ async function doLookup(entities, options, cb) {
           body: {
             limit: 10,
             distinct: false,
-            startTime: '2023-03-18T20:10:10Z', // Ask about this in review.
-            endTime: '2023-04-18T21:23:59Z',
+            startTime: getLookBackDays(options),
+            endTime: DateTime.local().toISO(),
             filter: `"${entity.value}"`,
-            fields: ['rawLogs', ...searchFields]
+            fields: selectedFields
           }
         });
 
@@ -69,6 +72,11 @@ async function doLookup(entities, options, cb) {
     const error = parseErrorToReadableJSON(err);
     return cb(error);
   }
+}
+
+function getLookBackDays(options) {
+  const currentDate = DateTime.local();
+  return currentDate.minus({ days: get('lookBackDays', options) }).toISO();
 }
 
 async function getToken() {
@@ -110,7 +118,7 @@ function validateOptions(userOptions, cb) {
     { key: 'clientSecret', message: 'You must provide a valid ScoutPrime API Key' }
   ];
 
-  const errors = requiredFields.reduce((acc, { key, message }) => {
+  let errors = requiredFields.reduce((acc, { key, message }) => {
     if (
       typeof userOptions[key].value !== 'string' ||
       userOptions[key].value.length === 0
@@ -119,6 +127,17 @@ function validateOptions(userOptions, cb) {
     }
     return acc;
   }, []);
+
+  if (userOptions.lookBackDays && userOptions.lookBackDays.value < 1) {
+    errors.push({ key: 'lookBackDays', message: 'value must be greater than 0' });
+  }
+
+  if (userOptions.searchFields && userOptions.searchFields.value.length < 1) {
+    errors.push({
+      key: 'searchFields',
+      message: 'You must select at least 1 field to search.'
+    });
+  }
 
   return cb(null, errors);
 }

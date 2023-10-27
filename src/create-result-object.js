@@ -7,17 +7,17 @@
  * @returns {{data: null, entity}|{data: {summary: [string], details}, entity}}
  *
  */
-const { getLogger } = require("./logger");
-const { size } = require("lodash/fp");
+const { getLogger } = require('./logger');
+const { size } = require('lodash/fp');
 
 class PolarityResult {
   createEmptyBlock(entity) {
     return {
       entity: entity,
       data: {
-        summary: ["Select a Category"],
-        details: [],
-      },
+        summary: ['Select a Category'],
+        details: []
+      }
     };
   }
 
@@ -26,15 +26,15 @@ class PolarityResult {
       entity: apiResponse.entity,
       data: {
         summary: createSummaryTags(apiResponse.data),
-        details: apiResponse.data,
-      },
+        details: apiResponse.data
+      }
     };
   }
 
   createNoResultsObject(entity) {
     return {
       entity,
-      data: null,
+      data: null
     };
   }
 }
@@ -43,9 +43,13 @@ const createSummaryTags = (result) => {
   const Logger = getLogger();
   const summaryTags = [];
 
-  Logger.trace({ result }, "result from createSummaryTags");
+  Logger.trace({ result }, 'result from createSummaryTags');
 
-  summaryTags.push(`Rows: ${size(result.rows)}`);
+  if (size(result.rows) === 10) {
+    summaryTags.push(`Logs: ${size(result.rows)}+`);
+  } else {
+    summaryTags.push(`Logs: ${size(result.rows)}`);
+  }
 
   return summaryTags;
 };

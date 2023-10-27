@@ -1,46 +1,56 @@
 polarity.export = PolarityComponent.extend({
   details: Ember.computed.alias('block.data.details'),
-  showCopyMessage: false,
-  uniqueIdPrefix: '',
-  logs: Ember.computed.alias('block.data.details.rows'),
+  expandableTitleStates: Ember.computed.alias('block._state.expandableTitleStates'),
+  showCopyMessage: Ember.computed.alias('block._state.showCopyMessage'),
+
+  logs: Ember.computed('block.data.details.rows', function () {
+    const logs = this.get('block.data.details.rows');
+    const displayFields = this.get('block.userOptions.displayFields').map(
+      (field) => field.value
+    );
+
+    for (const log of logs) {
+      for (const key of Object.keys(log)) {
+        if (!displayFields.includes(key) && key !== 'rawLogs') {
+          delete log[key];
+        }
+      }
+    }
+    return logs;
+  }),
   init() {
-    console.log(this.get('logs'));
-    let array = new Uint32Array(5);
-    this.set('uniqueIdPrefix', window.crypto.getRandomValues(array).join(''));
+    if (!this.get('block._state')) {
+      this.set('block._state', {});
+      this.set('block._state.expandableTitleStates', {});
+      this.set('block._state.showCopyMessage', {});
+    }
     this._super(...arguments);
   },
   actions: {
-    copyData: function () {
-      console.log('copyData');
+    copyTextToClipboard: function (text, index) {
+      const json = text[0];
 
-      Ember.run.scheduleOnce(
-        'afterRender',
-        this,
-        this.copyElementToClipboard,
-        `raw-log-content-${this.get('uniqueIdPrefix')}`
+      navigator.clipboard
+        .writeText(json)
+        .then(() => {
+          this.set(`block._state.showCopyMessage.${index}`, true);
+        })
+        .catch((err) => {})
+        .finally(() => {
+          setTimeout(() => {
+            if (!this.isDestroyed) {
+              this.set(`block._state.showCopyMessage.${index}`, false);
+            }
+          }, 2000);
+        });
+    },
+    toggleExpandableTitle: function (index) {
+      this.set(
+        `block._state.expandableTitleStates`,
+        Object.assign({}, this.get('block._state.expandableTitleStates'), {
+          [index]: !this.get(`block._state.expandableTitleStates`)[index]
+        })
       );
-
-      Ember.run.scheduleOnce('destroy', this, this.restoreCopyState);
     }
-  },
-  copyElementToClipboard(element) {
-    window.getSelection().removeAllRanges();
-    let range = document.createRange();
-
-    range.selectNode(
-      typeof element === 'string' ? document.getElementById(element) : element
-    );
-    window.getSelection().addRange(range);
-    document.execCommand('copy');
-    window.getSelection().removeAllRanges();
-  },
-  restoreCopyState() {
-    this.set('showCopyMessage', true);
-
-    setTimeout(() => {
-      if (!this.isDestroyed) {
-        this.set('showCopyMessage', false);
-      }
-    }, 2000);
   }
 });
