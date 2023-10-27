@@ -2,74 +2,75 @@
   <div class="container">
     {{#each logs as |log index|}}
       <div class="log-row">
-        {{#if block.userOptions.getRawLogs}}
-          <div class="d-flex align-items-center justify-content-end copy-btn-container">
-            <div>
-              <a {{action "copyTextToClipboard" log.rawLogs "showCopyMessage"}}>{{fa-icon
-                  icon="copy"
-                  fixedWidth=true
-                  class="icon"
-                }}</a>
-            </div>
+        <div class="d-flex align-items-center justify-content-left">
+          <h1 class="attributes-title p-title">
+            {{fa-icon icon="info" fixedWidth=true}}
+            Attributes
+          </h1>
+          {{#if block.userOptions.getRawLogs}}
+            <div class="d-flex align-items-center justify-content-end copy-btn-container">
+              <div
+                class="copy-success-message
+                  {{if (get showCopyMessage index) 'visible' 'hidden'}}"
+              >
+                {{fa-icon icon="check" fixedWidth=true class="copy-success-icon"}}
+                Copied Raw Log
+              </div>
 
-            <div class="copy-success-message {{if showCopyMessage 'visible' 'hidden'}}">
-              {{fa-icon icon="check" fixedWidth=true class="copy-success-icon"}}
-              Copied Raw Log.
+              <div>
+                <a {{action "copyTextToClipboard" log.rawLogs index}}>{{fa-icon
+                    icon="copy"
+                    fixedWidth=true
+                    class="icon copy-icon"
+                  }}</a>
+              </div>
             </div>
-          </div>
-        {{/if}}
-
-        <h1 class="attributes-title p-title">
-          {{fa-icon icon="info" fixedWidth=true}}
-          Attributes
-        </h1>
+          {{/if}}
+        </div>
 
         {{#each-in log as |type value|}}
           {{#if (not (eq type "rawLogs"))}}
             <div>
-              <span class="p-key">{{capitalize type}}:</span>
+              <span class="p-key">{{titleize (humanize (dasherize type))}}:</span>
               <span class="p-value">{{value}}</span>
             </div>
           {{/if}}
         {{/each-in}}
 
         {{#if block.userOptions.getRawLogs}}
-          {{#each-in log as |key value|}}
-            {{#if (eq key "rawLogs")}}
-              {{#each value as |rawLog|}}
-
-                {{#if (get expandableTitleStates index)}}
-                  <a
-                    href="#"
-                    class="expandable-title"
-                    {{on "click" (action "toggleExpandableTitle" index)}}
-                  >
-                    View Raw Logs
-                    <span class="text">
-                      {{fa-icon "laptop" fixedWidth=true}}
-                      {{subsystem.displayName}}
-                    </span>
-                    {{fa-icon "angle-up"}}
-                  </a>
-                  <div style="word-break: break-all; padding: 10px;">
-                    {{rawLog}}
-                  </div>
-                {{else}}
-                  <a
-                    href="#"
-                    class="expandable-title"
-                    {{on "click" (action "toggleExpandableTitle" index)}}
-                  >
-                    View Raw Logs
-                    <span class="text">
-                      {{fa-icon "laptop" fixedWidth=true}}
-                      {{subsystem.displayName}}
-                    </span>{{fa-icon "angle-down"}}
-                  </a>
-                {{/if}}
-              {{/each}}
-            {{/if}}
-          {{/each-in}}
+          {{#if log.rawLogs.length}}
+            {{#each log.rawLogs as |rawLog|}}
+              {{#if (get expandableTitleStates index)}}
+                <a
+                  href="#"
+                  class="expandable-title"
+                  {{on "click" (action "toggleExpandableTitle" index)}}
+                >
+                  View Raw Logs
+                  <span class="text">
+                    {{fa-icon "laptop" fixedWidth=true}}
+                    {{subsystem.displayName}}
+                  </span>
+                  {{fa-icon "angle-up"}}
+                </a>
+                <div style="word-break: break-all; padding: 10px;">
+                  {{rawLog}}
+                </div>
+              {{else}}
+                <a
+                  href="#"
+                  class="expandable-title"
+                  {{on "click" (action "toggleExpandableTitle" index)}}
+                >
+                  View Raw Logs
+                  <span class="text">
+                    {{fa-icon "laptop" fixedWidth=true}}
+                    {{subsystem.displayName}}
+                  </span>{{fa-icon "angle-down"}}
+                </a>
+              {{/if}}
+            {{/each}}
+          {{/if}}
         {{/if}}
       </div>
     {{/each}}
