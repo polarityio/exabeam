@@ -1,4 +1,5 @@
 {
+  "polarityIntegrationUuid": "ed5154f0-67a1-11ee-aaaf-fbe7fe538fd8",
   "name": "Exabeam",
   "description": "'The Polarity Exabeam Integration can be used to detect and respond to security threats by analyzing user and entity behavior, collecting and correlating data from multiple sources.",
   "acronym": "EXB",
