@@ -3,7 +3,7 @@
 const { polarityRequest } = require('./src/polarity-request');
 const { setLogger, getLogger } = require('./src/logger');
 const { PolarityResult } = require('./src/create-result-object');
-const { map, get, size } = require('lodash/fp');
+const { map, get, size, uniq } = require('lodash/fp');
 const { parseErrorToReadableJSON } = require('./src/errors');
 const { DateTime } = require('luxon');
 const NodeCache = require('node-cache');
@@ -28,7 +28,11 @@ async function doLookup(entities, options, cb) {
     polarityRequest.setHeaders('Accept', 'application/json');
     polarityRequest.setHeaders('Authorization', `Bearer ${token}`);
 
-    const searchFields = polarityRequest.options.searchFields.map((field) => field.value);
+    const searchFields = uniq(
+      polarityRequest.options.searchFields
+        .concat(polarityRequest.options.displayFields)
+        .map((field) => field.value)
+    );
 
     const selectedFields = options.getRawLogs
       ? ['rawLogs', ...searchFields]
