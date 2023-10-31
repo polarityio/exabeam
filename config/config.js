@@ -271,7 +271,7 @@ module.exports = {
         },
         {
           value: 'operation_type',
-          display: 'Opteration Type'
+          display: 'Operation Type'
         },
         {
           value: 'outcome',
