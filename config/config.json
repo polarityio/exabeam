@@ -19,11 +19,11 @@
   "customTypes": [
     {
       "key": "filename",
-      "regex": "^.{1,256}\\.(jpg|gif|doc|pdf|docx|db|dbsys|sys|exe|dll|file|virus|dontopen|zip|php|hta|bat|pem|txt|dat|msg|lnk|dotm|log|py|xls|ps1|vbe|VBE|css|CSS|site|store|world|email|group|tools|vip|services|rocks|download|online|network|vin|club|wiki|vbs|ini|top|gdn|bid|tech|html|cloud|win|energy|support|date|app|xyz|desi|software|kim)$"
+      "regex": "^.{6,256}\\.(jpg|gif|doc|pdf|docx|db|dbsys|sys|exe|dll|file|virus|dontopen|zip|php|hta|bat|pem|txt|dat|msg|lnk|dotm|log|py|xls|ps1|vbe|VBE|css|CSS|site|store|world|email|group|tools|vip|services|rocks|download|online|network|vin|club|wiki|vbs|ini|top|gdn|bid|tech|html|cloud|win|energy|support|date|app|xyz|desi|software|kim)$"
     },
     {
       "key": "hostname",
-      "regex": "^\\w{1,40}$"
+      "regex": "^\\w{6,40}$"
     }
   ],
   "styles": ["./styles/styles.less"],
@@ -41,6 +41,15 @@
       "name": "Exabeam URL",
       "description": "Exabeam URL",
       "default": "https://api.us-west.exabeam.cloud",
+      "type": "text",
+      "userCanEdit": false,
+      "adminOnly": true
+    },
+    {
+      "key": "instanceUrl",
+      "name": "Exabeam User Instance URL",
+      "description": "The URL for the user's Exabeam instance.",
+      "default": "",
       "type": "text",
       "userCanEdit": false,
       "adminOnly": true
