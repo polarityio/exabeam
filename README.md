@@ -6,6 +6,10 @@
 
 The base URL for the Exabeam API to include the schema (https://) and port as needed
 
+### Exabeam User Instance URL
+
+The URL for the user's Exabeam instance.
+
 ### Exabeam Client ID
 
 Exabeam client id that can be found under settings -> API keys in the Exabeam dashboard.
