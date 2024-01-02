@@ -53,11 +53,11 @@ module.exports = {
     {
       key: 'instanceUrl',
       name: 'Exabeam User Instance URL',
-      description: "The URL for the user's Exabeam instance.",
+      description: "The URL for the user's Exabeam instance. This option must be visible to all users.",
       default: '',
       type: 'text',
       userCanEdit: false,
-      adminOnly: true
+      adminOnly: false
     },
     {
       key: 'clientId',
