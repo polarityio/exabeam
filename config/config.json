@@ -3,18 +3,24 @@
   "name": "Exabeam",
   "description": "'The Polarity Exabeam Integration can be used to detect and respond to security threats by analyzing user and entity behavior, collecting and correlating data from multiple sources.",
   "acronym": "EXB",
-  "request": {
-    "cert": "",
-    "key": "",
-    "passphrase": "",
-    "ca": "",
-    "proxy": ""
-  },
   "logging": {
     "level": "info"
   },
   "onDemandOnly": true,
-  "entityTypes": ["*"],
+  "entityTypes": [
+    "IPv4",
+    "IPv4CIDR",
+    "IPv6",
+    "domain",
+    "url",
+    "MD5",
+    "SHA1",
+    "SHA256",
+    "email",
+    "cve",
+    "MAC",
+    "string"
+  ],
   "defaultColor": "light-blue",
   "customTypes": [
     {
