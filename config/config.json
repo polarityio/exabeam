@@ -1,12 +1,47 @@
 {
   "polarityIntegrationUuid": "ed5154f0-67a1-11ee-aaaf-fbe7fe538fd8",
   "name": "Exabeam",
-  "description": "'The Polarity Exabeam Integration can be used to detect and respond to security threats by analyzing user and entity behavior, collecting and correlating data from multiple sources.",
+  "description": "The Polarity Exabeam Integration can be used to detect and respond to security threats by analyzing user and entity behavior, collecting and correlating data from multiple sources.",
   "acronym": "EXB",
   "logging": {
     "level": "info"
   },
   "onDemandOnly": true,
+  "dataTypes": [
+    "IPv4",
+    "IPv4CIDR",
+    "IPv6",
+    "domain",
+    "url",
+    "MD5",
+    "SHA1",
+    "SHA256",
+    "email",
+    "cve",
+    "MAC",
+    {
+      "type": "string",
+      "enabled": false
+    },
+    {
+      "type": "custom",
+      "name": "Filename",
+      "description": "Captures file names between 1 and 256 characters ending in jpg, gif, doc, pdf, docx, db, dbsys, sys, exe, dll, file, virus, dontopen, zip, php, hta, bat, pem, txt, dat, msg, lnk, dotm, log, py, xls, ps1, vbe, VBE, css, CSS, site, store, world, email, group, tools, vip, services, rocks, download, online, network, vin, club, wiki, vbs, ini, top, gdn, bid, tech, html, cloud, win, energy, support, date, app, xyz, desi, software, or kim",
+      "editable": true,
+      "enabled": true,
+      "key": "filename",
+      "regex": "^.{1,256}\\.(jpg|gif|doc|pdf|docx|db|dbsys|sys|exe|dll|file|virus|dontopen|zip|php|hta|bat|pem|txt|dat|msg|lnk|dotm|log|py|xls|ps1|vbe|VBE|css|CSS|site|store|world|email|group|tools|vip|services|rocks|download|online|network|vin|club|wiki|vbs|ini|top|gdn|bid|tech|html|cloud|win|energy|support|date|app|xyz|desi|software|kim)$"
+    },
+    {
+      "type": "custom",
+      "name": "Hostname",
+      "description": "Matches on possible Hostnames lookups which can be a single search term between 2 and 40 characters using A-Z, 0-9 and underscores.",
+      "editable": true,
+      "enabled": false,
+      "key": "hostname",
+      "regex": "^\\w{2,40}$"
+    }
+  ],
   "entityTypes": [
     "IPv4",
     "IPv4CIDR",
